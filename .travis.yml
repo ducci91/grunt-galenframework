@@ -13,9 +13,8 @@ node_js:
 addons:
   firefox: "51.0.1"
 env:
-  - NPM_VERSION=4
-  - NPM_VERSION=3
-  - DISPLAY=:99
+  - NPM_VERSION=4 DISPLAY=:99
+  - NPM_VERSION=3 DISPLAY=:99
 before_install:
   - jdk_switcher use oraclejdk8
   - npm install -g npm@$NPM_VERSION

@@ -42,12 +42,18 @@ var fs = require('fs'),
   async = require('async');
 
 function resolveNodePath(module, subpath) {
-  var filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath);
+  var filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
   try {
     fs.statSync(filename);
   }
   catch (err) {
-    filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath);
+    filename = path.resolve(__dirname + '/node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+    try {
+      fs.statSync(filename);
+    }
+    catch (err) {
+      filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+    }
   }
   return filename;
 }
@@ -300,8 +306,8 @@ var galenTasks = function (grunt) {
       var junitReport = options.junitreport === true ? '--junitreport ' + (options.junitReportDest || '') : '';
       var jsonReport = options.jsonreport === true ? '--jsonreport ' + (options.jsonReportDest || '') : '';
       var testngReport = options.testngReport === true ? '--testngreport ' + (options.testngReportDest || '') : '';
-      var chromedriver = '-Dwebdriver.chrome.driver=' + resolveNodePath('chromedriver', 'bin/chromedriver' + (process.platform === 'win32' ? '.exe' : ''));
-      var geckodriver = '-Dwebdriver.gecko.driver=' + resolveNodePath('geckodriver', 'bin/geckodriver' + (process.platform === 'win32' ? '.exe' : ''));
+      var chromedriver = '-Dwebdriver.chrome.driver=' + resolveNodePath('chromedriver', 'bin/chromedriver');
+      var geckodriver = '-Dwebdriver.gecko.driver=' + resolveNodePath('geckodriver', 'bin/geckodriver');
 
       var resultPadding = 0;
       testFiles.forEach(function (filePath) {

@@ -12,6 +12,7 @@ environment:
     - NODE_VERSION: "5.0"
     - NODE_VERSION: "5"
     - NODE_VERSION: "6"
+    - NODE_VERSION: "7"
 
 platform:
   - x86
@@ -26,7 +27,7 @@ cache:
 
 install:
   - cmd: nuget sources add -Name api.nuget.org -Source https://api.nuget.org/v3/index.json
-  - choco install firefox -version 43.0.3
+  - choco install firefox -version 51.0.1
   - ps: Install-Product node $env:NODE_VERSION
   - node --version
   - npm --version

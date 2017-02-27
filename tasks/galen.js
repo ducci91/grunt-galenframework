@@ -42,17 +42,23 @@ var fs = require('fs'),
   async = require('async');
 
 function resolveNodePath(module, subpath) {
-  var filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+  var filename = path.resolve(__dirname + '/node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
   try {
     fs.statSync(filename);
   }
   catch (err) {
-    filename = path.resolve(__dirname + '/node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+    filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
     try {
       fs.statSync(filename);
     }
     catch (err) {
-      filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+      filename = path.resolve(__dirname + '/../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+      try {
+        fs.statSync(filename);
+      }
+      catch (err) {
+        filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+      }
     }
   }
   return filename;

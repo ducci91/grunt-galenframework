@@ -300,7 +300,7 @@ var galenTasks = function (grunt) {
       var junitReport = options.junitreport === true ? '--junitreport ' + (options.junitReportDest || '') : '';
       var jsonReport = options.jsonreport === true ? '--jsonreport ' + (options.jsonReportDest || '') : '';
       var testngReport = options.testngReport === true ? '--testngreport ' + (options.testngReportDest || '') : '';
-      var chromedriver = '-Dwebdriver.chrome.driver=' + resolveNodePath('chromedriver', 'bin/chromedriver');
+      var chromedriver = '-Dwebdriver.chrome.driver=' + resolveNodePath('chromedriver', 'bin/chromedriver' + (process.platform === 'win32' ? '.exe' : ''));
       var geckodriver = '-Dwebdriver.gecko.driver=' + resolveNodePath('geckodriver', 'bin/geckodriver' + (process.platform === 'win32' ? '.exe' : ''));
 
       var resultPadding = 0;

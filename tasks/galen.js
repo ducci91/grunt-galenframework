@@ -37,27 +37,35 @@
  * @requires childprocess
  */
 var fs = require('fs'),
+  resolve = require('resolve'),
   path = require("path"),
   childprocess = require('child_process'),
   async = require('async');
 
 function resolveNodePath(module, subpath) {
-  var filename = path.resolve(__dirname + '/node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+  var filename = resolve.sync(module + '/' + subpath);
   try {
     fs.statSync(filename);
   }
+    // resolve manually as fallback
   catch (err) {
-    filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+    filename = path.resolve(__dirname + '/node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
     try {
       fs.statSync(filename);
     }
     catch (err) {
-      filename = path.resolve(__dirname + '/../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+      filename = path.resolve(__dirname + '/../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
       try {
         fs.statSync(filename);
       }
       catch (err) {
-        filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+        filename = path.resolve(__dirname + '/../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+        try {
+          fs.statSync(filename);
+        }
+        catch (err) {
+          filename = path.resolve(__dirname + '/../../../node_modules/' + module + '/' + subpath + (process.platform === 'win32' ? '.exe' : ''));
+        }
       }
     }
   }

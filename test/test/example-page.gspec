@@ -1,12 +1,12 @@
 @objects
     label              css      h1
-    paragraph          css      p
+    paragraph-*          css      p
 
 = Main section =
     label:
         visible
-        above paragraph
+        above paragraph-1
 
-    paragraph:
+    paragraph-1:
         visible
         below label
